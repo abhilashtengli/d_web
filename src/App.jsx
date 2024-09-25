@@ -1,8 +1,9 @@
-
 function App() {
   return (
     <>
-      <div>Hello</div>
+      <div data-theme="dark" className="h-screen">
+        Hello
+      </div>
     </>
   );
 }
