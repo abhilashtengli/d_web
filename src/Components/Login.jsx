@@ -1,9 +1,14 @@
 import axios from "axios";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addUser } from "../utils/UserSlice";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
-  const [emailId, setEmailId] = useState("abhi@gmail.com");
-  const [password, setPassword] = useState("Abhi@123");
+  const [emailId, setEmailId] = useState("mahesh@gmail.com");
+  const [password, setPassword] = useState("Mahesh@123");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
@@ -13,9 +18,12 @@ const Login = () => {
           emailId,
           password,
         },
-        { withCredentials: true } 
+        { withCredentials: true }
         // To save token in cookies you need this
       );
+      // console.log(res.data);
+      dispatch(addUser(res.data));
+      return navigate("/feed");
     } catch (err) {
       console.error(err);
     }
