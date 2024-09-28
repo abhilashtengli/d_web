@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { addUser } from "../utils/UserSlice";
 import { useNavigate } from "react-router-dom";
+import { Base_Url } from "./Constants";
 
 const Login = () => {
   const [emailId, setEmailId] = useState("mahesh@gmail.com");
@@ -13,7 +14,7 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       const res = await axios.post(
-        "http://localhost:4000/login",
+        Base_Url + "/login",
         {
           emailId,
           password,
@@ -21,7 +22,6 @@ const Login = () => {
         { withCredentials: true }
         // To save token in cookies you need this
       );
-      // console.log(res.data);
       dispatch(addUser(res.data));
       return navigate("/feed");
     } catch (err) {
