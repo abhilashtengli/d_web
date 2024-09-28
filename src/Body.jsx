@@ -3,11 +3,13 @@ import NavBar from "./NavBar";
 import Footer from "./Components/Footer";
 
 const Body = () => {
-  return <div>
-  <NavBar/>
-  <Outlet/>
-  <Footer/>
-  </div>;
+  return (
+    <div className="">
+      <NavBar />
+      <Outlet />
+      <Footer />
+    </div>
+  );
 };
 
 export default Body;
