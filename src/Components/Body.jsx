@@ -23,17 +23,15 @@ const Body = () => {
       if (err.status === 401) {
         navigate("/login");
       }
-      // console.error(err);
     }
   };
 
   useEffect(() => {
     fetchUserData();
-    console.log("Loggin in");
   }, []);
 
   return (
-    <div data-theme="dark" className="h-screen bg-gray-500">
+    <div data-theme="dark" className="h-full bg-gray-400 ">
       <NavBar />
       <Outlet />
       <Footer />
