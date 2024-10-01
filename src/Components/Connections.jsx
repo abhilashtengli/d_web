@@ -34,7 +34,7 @@ const Connections = () => {
       <div className="flex justify-center my-16">
         <h1 className="text-2xl ">Connections</h1>
       </div>
-      <div className=" border-red-500 flex justify-center gap-10 py-2 ite">
+      <div className=" border-red-500 flex flex-wrap justify-center gap-10 py-2 ite">
         {connections.map((connection) => {
           const { firstName, lastName, age, gender, about, photoUrl } =
             connection;

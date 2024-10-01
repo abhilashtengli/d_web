@@ -1,12 +1,11 @@
 import axios from "axios";
 import { Base_Url } from "../utils/Constants";
 import { useDispatch, useSelector } from "react-redux";
-import { addRequest } from "../utils/RequestSlice";
+import { addRequest, removeRequest } from "../utils/RequestSlice";
 import { useEffect } from "react";
 
 const Requests = () => {
   const requests = useSelector((store) => store.requests);
-
   const dispatch = useDispatch();
 
   const fetchRequest = async () => {
@@ -16,6 +15,20 @@ const Requests = () => {
     console.log(res.data.data);
 
     dispatch(addRequest(res.data.data));
+  };
+
+  const reviewRequest = async (status, _id) => {
+    try {
+      // eslint-disable-next-line no-unused-vars
+      const res = await axios.post(
+        Base_Url + "/request/review/" + status + "/" + _id,
+        {},
+        { withCredentials: true }
+      );
+      dispatch(removeRequest(_id));
+    } catch (err) {
+      console.log(err.message);
+    }
   };
 
   useEffect(() => {
@@ -30,7 +43,7 @@ const Requests = () => {
   return (
     <>
       <div className="flex justify-center my-16">
-        <h1 className="text-2xl ">Connections</h1>
+        <h1 className="text-2xl ">Connection Requests</h1>
       </div>
       <div className=" border-red-500 flex justify-center gap-10 py-2 ite">
         {requests.map((request) => {
@@ -53,8 +66,18 @@ const Requests = () => {
                 <h2>{about}</h2>
               </div>
               <div className="flex justify-center items-center gap-x-16">
-                <button className="btn btn-primary w-20">Reject</button>
-                <button className="btn btn-secondary">Accept</button>
+                <button
+                  className="btn btn-primary w-20"
+                  onClick={() => reviewRequest("rejected", request._id)}
+                >
+                  Reject
+                </button>
+                <button
+                  className="btn btn-secondary"
+                  onClick={() => reviewRequest("accepted", request._id)}
+                >
+                  Accept
+                </button>
               </div>
             </div>
           );
