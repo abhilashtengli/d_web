@@ -31,7 +31,7 @@ const Body = () => {
   }, []);
 
   return (
-    <div data-theme="dark" className="h-full bg-gray-400 ">
+    <div data-theme="dark" className="h-full">
       <NavBar />
       <Outlet />
       <Footer />
