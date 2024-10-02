@@ -22,6 +22,7 @@ const Connections = () => {
 
   useEffect(() => {
     fetchConnections();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (!connections) return;
@@ -40,7 +41,6 @@ const Connections = () => {
             connection;
 
           return (
-            // eslint-disable-next-line react/jsx-key
             <div
               className="border border-gray-800 rounded-lg flex bg-gray-800 shadow-lg flex-col p-4 gap-y-5 w-72"
               key={firstName}

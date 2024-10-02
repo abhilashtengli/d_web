@@ -24,7 +24,13 @@ const Feed = () => {
   };
   useEffect(() => {
     getFeed();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (!feed) return;
+
+  if (feed.length <= 0)
+    return <h1 className="text-center my-10">No new users Found</h1>;
 
   return (
     feed && (
