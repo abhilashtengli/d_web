@@ -45,7 +45,7 @@ const UserFeedCard = ({ user }) => {
         <img
           src={photoUrl}
           alt="photo"
-          className="w-56 object-cover mt-5 rounded-lg"
+          className="w-56 h-56 object-cover mt-5 rounded-full"
         />
       </figure>
       <div className="card-body">
@@ -61,7 +61,7 @@ const UserFeedCard = ({ user }) => {
           </button>
           <button
             className="btn btn-secondary"
-            onClick={() => handleSendRequest("ignore", _id)}
+            onClick={() => handleSendRequest("interested", _id)}
           >
             Interested
           </button>

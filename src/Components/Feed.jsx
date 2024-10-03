@@ -8,10 +8,12 @@ import UserFeedCard from "./UserFeedCard";
 const Feed = () => {
   const dispatch = useDispatch();
   const feed = useSelector((store) => store.feed);
-  console.log(feed);
+  // console.log(feed);
   const getFeed = async () => {
     if (feed) return;
     try {
+      //The connection request already who sent me should not be seen in
+      //  the feed and loggedIn user should not be seen in the feed (Fix this bug)
       const res = await axios.get(Base_Url + "/user/feed", {
         withCredentials: true,
       });
