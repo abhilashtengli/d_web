@@ -12,7 +12,7 @@ const Requests = () => {
     const res = await axios.get(Base_Url + "/user/requests/pending", {
       withCredentials: true,
     });
-    console.log(res.data.data);
+    // console.log(res.data.data);
 
     dispatch(addRequest(res.data.data));
   };

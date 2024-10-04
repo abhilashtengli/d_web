@@ -10,7 +10,7 @@ const Feed = () => {
   const feed = useSelector((store) => store.feed);
   // console.log(feed);
   const getFeed = async () => {
-    if (feed) return;
+    // if (feed) return;
     try {
       //The connection request already who sent me should not be seen in
       //  the feed and loggedIn user should not be seen in the feed (Fix this bug)
@@ -24,14 +24,15 @@ const Feed = () => {
       return err.message;
     }
   };
+
   useEffect(() => {
-    getFeed();
+    if (!feed || feed.length === 0) {
+      getFeed();
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [feed]);
 
-  if (!feed) return;
-
-  if (feed.length <= 0)
+  if (!feed || feed.length <= 0)
     return <h1 className="text-center my-10">No new users Found</h1>;
 
   return (

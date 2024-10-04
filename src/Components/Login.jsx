@@ -107,13 +107,15 @@ const Login = () => {
                 <div className="label">
                   <span className="label-text">Password</span>
                 </div>
-                <input
-                  type="password"
-                  placeholder="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="input input-bordered w-full max-w-xs"
-                />
+                <form>
+                  <input
+                    type="password"
+                    placeholder="password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="input input-bordered w-full max-w-xs"
+                  />
+                </form>
               </label>
             </div>
             <p className="text-lg text-red-600">{error}</p>
