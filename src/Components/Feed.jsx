@@ -13,7 +13,7 @@ const Feed = () => {
     // if (feed) return;
     try {
       //The connection request already who sent me should not be seen in
-      //  the feed and loggedIn user should not be seen in the feed (Fix this bug)
+      //  the feed and loggedIn user should not be seen in the feed (Fix this bug) (now working fine)
       const res = await axios.get(Base_Url + "/user/feed", {
         withCredentials: true,
       });
