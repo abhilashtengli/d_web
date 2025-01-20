@@ -4,15 +4,35 @@ import { Base_Url } from "../utils/Constants";
 const Premium = () => {
   const handleClick = async (type) => {
     const response = await axios.post(
-      Base_Url + "/payments/create",
+      Base_Url + "/payment/create",
       {
         memberShipType: type
       },
       { withCredentials: true }
     );
+    console.log("Response Data : " + response.data.data);
+    const savedPayment = response.data.data;
+    const options = {
+      key: response.data.key_ID,
+      amount: savedPayment.amount,
+      currency: savedPayment.currency,
+      name: "Dev Tinder",
+      description: "Test Transaction",
+      order_id: savedPayment.orderId,
+      prefill: {
+        name: savedPayment.notes.Name,
+        email: savedPayment.notes.emailId
+      },
+      theme: {
+        color: "#F37254"
+      }
+    };
+    console.log(options);
+    const rzp = new window.Razorpay(options);
+    rzp.open();
   };
   return (
-    <div className="m-10 h-screen w-full flex justify-center">
+    <div className="m-10 h-screen flex justify-center">
       <div className="flex gap-5">
         <div className="border  w-72 h-96 relative">
           <h1 className="text-center text-3xl py-5">Basic </h1>
