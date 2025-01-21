@@ -3,6 +3,7 @@ import { Base_Url } from "../utils/Constants";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addConnections } from "../utils/ConnectionSlice";
+import { Link } from "react-router-dom";
 
 const Connections = () => {
   const dispatch = useDispatch();
@@ -11,7 +12,7 @@ const Connections = () => {
   const fetchConnections = async () => {
     try {
       const res = await axios.get(Base_Url + "/user/connections", {
-        withCredentials: true,
+        withCredentials: true
       });
       //   console.log(res.data.data);
       dispatch(addConnections(res.data.data));
@@ -37,7 +38,7 @@ const Connections = () => {
       </div>
       <div className=" border-red-500 flex flex-wrap justify-center gap-10 py-2 ite">
         {connections.map((connection) => {
-          const { firstName, lastName, age, gender, about, photoUrl } =
+          const { _id, firstName, lastName, age, gender, about, photoUrl } =
             connection;
 
           return (
@@ -55,6 +56,9 @@ const Connections = () => {
                 <h2>{age + ", " + gender}</h2>
                 <h2>{about}</h2>
               </div>
+              <Link to={"/chat/" + _id} className="">
+                <button className="btn-primary btn w-full">Chat</button>
+              </Link>
             </div>
           );
         })}
