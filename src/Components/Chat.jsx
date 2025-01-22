@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { createSocketConnection } from "../utils/socket";
 import { useSelector } from "react-redux";
@@ -11,13 +11,21 @@ const Chat = () => {
   const user = useSelector((store) => store.user);
   const userId = user?._id;
 
+  const socketRef = useRef(null);
+
   useEffect(() => {
     if (!userId) return;
     const socket = createSocketConnection();
+    socketRef.current = socket;
+
     socket.emit("joinChat", {
       firstName: user.firstName,
       userId,
       targetUserId
+    });
+
+    socket.on("messageReceived", ({ firstName, text }) => {
+      console.log(firstName + " : " + text);
     });
 
     return () => {
@@ -26,8 +34,17 @@ const Chat = () => {
   }, [userId, targetUserId]);
 
   const sendMessage = () => {
-    
-  }
+    if (!socketRef.current) return;
+
+    socketRef.current.emit("sendMessage", {
+      firstName: user.firstName,
+      text: newMessage,
+      userId,
+      targetUserId
+    });
+
+    setNewMessage(""); // Clear the input field
+  };
 
   return (
     <div className="w-1/2 mx-auto border  flex flex-col h-[72vh] justify-between">
@@ -55,7 +72,9 @@ const Chat = () => {
           onChange={(e) => setNewMessage(e.target.value)}
           className="flex-1 rounded p-2 text-white bg-gray-700"
         ></input>
-        <button onClick={() => sendMessage()} className="btn btn-primary">Send</button>
+        <button onClick={() => sendMessage()} className="btn btn-primary">
+          Send
+        </button>
       </div>
     </div>
   );
