@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { createSocketConnection } from "../utils/socket";
 import { useSelector } from "react-redux";
+import axios from "axios";
+import { Base_Url } from "../utils/Constants";
 
 const Chat = () => {
   const { targetUserId } = useParams();
@@ -11,6 +13,26 @@ const Chat = () => {
   const userId = user?._id;
 
   const socketRef = useRef(null);
+
+  const fetchChatMessages = async () => {
+    const chat = await axios.get(Base_Url + "/chat/" + targetUserId, {
+      withCredentials: true
+    });
+    const chatMessages = chat.data.messages.map((msg) => {
+      const { senderId, text } = msg;
+      return {
+        firstName: senderId.firstName,
+        lastName: senderId.lastName,
+        text
+      };
+    });
+    setMessages(chatMessages);
+  };
+
+  useEffect(() => {
+    fetchChatMessages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     if (!userId) return;
@@ -23,9 +45,8 @@ const Chat = () => {
       targetUserId
     });
 
-    socket.on("messageReceived", ({ firstName, text }) => {
-      setMessages((messages) => [...messages, { firstName, text }]);
-      console.log(firstName + " : " + text);
+    socket.on("messageReceived", ({ firstName, lastName, text }) => {
+      setMessages((messages) => [...messages, { firstName, lastName, text }]);
     });
 
     return () => {
@@ -39,6 +60,7 @@ const Chat = () => {
 
     socketRef.current.emit("sendMessage", {
       firstName: user.firstName,
+      lastName: user.lastName,
       text: newMessage,
       userId,
       targetUserId
@@ -49,16 +71,21 @@ const Chat = () => {
 
   return (
     <div className="w-1/2 mx-auto border  flex flex-col h-[72vh] justify-between">
-      <h1 className="p-5 border-b border-zinc-400 text-3xl">
-        Chat with {targetUserId}
-      </h1>
+      <h1 className="p-5 border-b border-zinc-400 text-3xl">Chat with</h1>
       <div className="flex-1 overflow-scroll p-5 w-full ">
-        {/* display message */}
         {messages.map((msg, index) => {
+          {
+            /* display message */
+          }
           return (
-            <div key={index} className="chat chat-start ">
+            <div
+              key={index}
+              className={`chat ${
+                user.firstName === msg.firstName ? "chat-end" : "chat-start"
+              }`}
+            >
               <div className="chat-header">
-                {msg.firstName}
+                {msg.firstName + " " + msg.lastName}
                 <time className="text-xs opacity-50"> 2 hours ago</time>
               </div>
               <div className="chat-bubble">{msg.text}</div>
