@@ -5,8 +5,7 @@ import { useSelector } from "react-redux";
 
 const Chat = () => {
   const { targetUserId } = useParams();
-  // eslint-disable-next-line no-unused-vars
-  const [messages, setMessages] = useState([{ text: "Hello world" }]);
+  const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const user = useSelector((store) => store.user);
   const userId = user?._id;
@@ -25,12 +24,14 @@ const Chat = () => {
     });
 
     socket.on("messageReceived", ({ firstName, text }) => {
+      setMessages((messages) => [...messages, { firstName, text }]);
       console.log(firstName + " : " + text);
     });
 
     return () => {
       socket.disconnect();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId, targetUserId]);
 
   const sendMessage = () => {
@@ -57,10 +58,10 @@ const Chat = () => {
           return (
             <div key={index} className="chat chat-start ">
               <div className="chat-header">
-                Abhilash Tengli
+                {msg.firstName}
                 <time className="text-xs opacity-50"> 2 hours ago</time>
               </div>
-              <div className="chat-bubble">You were the Chosen One!</div>
+              <div className="chat-bubble">{msg.text}</div>
               <div className="chat-footer opacity-50">Seen</div>
             </div>
           );
